@@ -11,8 +11,8 @@ WITH src_budget AS (
 
 renamed_casted AS (
     SELECT
-          _row
-        , product_id
+          {{ dbt_utils.generate_surrogate_key(['product_id', 'month']) }} AS budget_id
+        ,  product_id
         , quantity
         , month AS last_day_month
         , _fivetran_synced AS data_load
