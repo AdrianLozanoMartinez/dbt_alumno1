@@ -1,0 +1,48 @@
+version: 2
+
+models:
+  - name: budget
+    config:
+      contract:
+        enforced: true
+    description: >
+      Data about budget in demo.
+    columns:
+      - name: product_id
+        data_type: text
+        constraints:
+          - type: not_null
+        description: >
+          Foreign key for each unique product on platform.
+        tests:
+          - not_null
+          - relationships:
+              to: ref('stg_sql_server_dbo__products')
+              field: product_id
+          - unique
+
+      - name: quantity
+        data_type: int     
+        description: >
+          Budget amount.
+        tests:
+          - not_null
+
+      - name: month
+        data_type: text
+        constraints:
+          - type: not_null
+        description: >
+          Budget month.
+        tests:
+          - not_null
+          - unique
+
+      - name: _fivetran_synced
+        data_type: text                      
+        constraints:
+          - type: not_null
+        description: >
+          Date inserted into the table.
+        tests:
+          - not_null
