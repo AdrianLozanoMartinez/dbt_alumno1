@@ -3,7 +3,8 @@ version: 2
 sources:
   - name: google_sheets # name of the source
     schema: google_sheets # this is the schema our raw data lives in
-    database: ALUMNO1_DEV_BRONZE_DB # this is the name of our database
+    #database: ALUMNO1_DEV_BRONZE_DB # this is the name of our database
+    database: "{{ env_var('DBT_ENVIRONMENTS') }}_BRONZE_DB"
 
     quoting:
       database: false
@@ -38,7 +39,8 @@ sources:
               Number of units for each product and each month for products.
             tests:
               - not_null
-              - positive_values
+              - dbt_utils.accepted_range:
+                  min_value: 0
 
           - name: month
             description: >
