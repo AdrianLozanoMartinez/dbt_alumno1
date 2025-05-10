@@ -1,209 +1,291 @@
- sources:
+version: 2
+
+sources:
   - name: sql_server_dbo
-    description: ""
-    database: alumno1_dev_bronze_db 
+    schema: sql_server_dbo
+    description: "Raw data extracted from the SQL Server database, provided via Fivetran."
+    #database: alumno1_dev_bronze_db 
+    database: "{{ env_var('DBT_ENVIRONMENTS') }}_BRONZE_DB"
+
+    quoting:
+      database: false
+      schema: false
+      identifier: false
+
+    freshness:
+      warn_after: { count: 1000, period: day }
+      error_after: { count: 1000, period: day }
+
     tables:
       - name: addresses
-        description: ""
+        description: "Contains address details for users and orders."
+        loaded_at_field: _fivetran_synced
         columns:
           - name: address_id
-            data_type: varchar
-            description: ""
+            description: "Unique identifier for each address."
+            tests:
+              - not_null
+              - unique
           - name: zipcode
-            data_type: number
-            description: ""
+            description: "Postal code associated with the address."
+            tests:
+              - dbt_utils.accepted_range:
+                  min_value: 0
           - name: country
-            data_type: varchar
-            description: ""
+            description: "Country name associated with the address."
+            tests:
+              - not_null
           - name: address
-            data_type: varchar
-            description: ""
+            description: "Street address and number."
           - name: state
-            data_type: varchar
-            description: ""
+            description: "State or province within the country."
           - name: _fivetran_deleted
-            data_type: boolean
-            description: ""
+            description: "Indicates whether the record was deleted by Fivetran."
+            tests:
+              - not_null
           - name: _fivetran_synced
-            data_type: timestamp_tz
-            description: ""
+            description: "Timestamp when the record was last synced by Fivetran."
+            tests:
+              - not_null
 
       - name: events
-        description: ""
+        description: "Tracks user interactions such as clicks, views, and conversions."
         columns:
           - name: event_id
-            data_type: varchar
-            description: ""
+            description: "Unique identifier for each event."
+            tests:
+              - not_null
+              - unique
           - name: page_url
-            data_type: varchar
-            description: ""
+            description: "URL of the page where the event occurred."
           - name: event_type
-            data_type: varchar
-            description: ""
+            description: "Type of event, such as 'click' or 'view'."
+            tests:
+              - not_null
           - name: user_id
-            data_type: varchar
-            description: ""
+            description: "Identifier of the user who triggered the event."
+            tests:
+              - not_null
           - name: product_id
-            data_type: varchar
-            description: ""
+            description: "Product associated with the event."
+            tests:
+              - not_null
           - name: session_id
-            data_type: varchar
-            description: ""
+            description: "Identifier for the user's session."
+            tests:
+              - not_null
           - name: created_at
-            data_type: timestamp_ntz
-            description: ""
+            description: "Timestamp when the event occurred."
+            tests:
+              - not_null
           - name: order_id
-            data_type: varchar
-            description: ""
+            description: "Order linked to the event, if applicable."
+            tests:
+              - not_null
           - name: _fivetran_deleted
-            data_type: boolean
-            description: ""
+            description: "Indicates whether the record was deleted by Fivetran."
+            tests:
+              - not_null
           - name: _fivetran_synced
-            data_type: timestamp_tz
-            description: ""
+            description: "Timestamp when the record was last synced by Fivetran."
+            tests:
+              - not_null
 
       - name: order_items
-        description: ""
+        description: "Details of items included in each order."
         columns:
           - name: order_id
-            data_type: varchar
-            description: ""
+            description: "Identifier of the order this item belongs to."
+            tests:
+              - not_null
+              - unique
           - name: product_id
-            data_type: varchar
-            description: ""
+            description: "Identifier of the purchased product."
+            tests:
+              - not_null
           - name: quantity
-            data_type: number
-            description: ""
+            description: "Quantity of the product in the order."
+            tests:
+              - not_null
+              - dbt_utils.accepted_range:
+                  min_value: 0
           - name: _fivetran_deleted
-            data_type: boolean
-            description: ""
+            description: "Indicates whether the record was deleted by Fivetran."
+            tests:
+              - not_null
           - name: _fivetran_synced
-            data_type: timestamp_tz
-            description: ""
+            description: "Timestamp when the record was last synced by Fivetran."
+            tests:
+              - not_null
 
       - name: orders
-        description: ""
+        description: "Information about customer orders, including status and costs."
         columns:
           - name: order_id
-            data_type: varchar
-            description: ""
+            description: "Unique identifier for each order."
+            tests:
+              - not_null
+              - unique
           - name: shipping_service
-            data_type: varchar
-            description: ""
+            description: "Service used for shipping the order."
+            tests:
+              - not_null
           - name: shipping_cost
-            data_type: float
-            description: ""
+            description: "Cost associated with shipping."
+            tests:
+              - not_null
+              - dbt_utils.accepted_range:
+                  min_value: 0
           - name: address_id
-            data_type: varchar
-            description: ""
+            description: "Identifier of the address where the order is shipped."
+            tests:
+              - not_null
           - name: created_at
-            data_type: timestamp_tz
-            description: ""
+            description: "Timestamp when the order was placed."
+            tests:
+              - not_null
           - name: promo_id
-            data_type: varchar
-            description: ""
+            description: "Identifier of the promotion applied to the order, if any."
           - name: estimated_delivery_at
-            data_type: timestamp_tz
-            description: ""
+            description: "Estimated delivery date and time."
           - name: order_cost
-            data_type: float
-            description: ""
+            description: "Total cost of the order before tax and discounts."
+            tests:
+              - not_null
+              - dbt_utils.accepted_range:
+                  min_value: 0
           - name: user_id
-            data_type: varchar
-            description: ""
+            description: "Identifier of the user who placed the order."
+            tests:
+              - not_null
           - name: order_total
-            data_type: float
-            description: ""
+            description: "Final order amount including all costs and discounts."
+            tests:
+              - not_null
+              - dbt_utils.accepted_range:
+                  min_value: 0
           - name: delivered_at
-            data_type: timestamp_tz
-            description: ""
+            description: "Actual delivery date and time."
+            tests:
+              - not_null
           - name: tracking_id
-            data_type: varchar
-            description: ""
+            description: "Tracking number for shipment tracking."
+            tests:
+              - not_null
           - name: status
-            data_type: varchar
-            description: ""
+            description: "Current status of the order (e.g., shipped, delivered)."
+            tests:
+              - not_null
           - name: _fivetran_deleted
-            data_type: boolean
-            description: ""
+            description: "Indicates whether the record was deleted by Fivetran."
+            tests:
+              - not_null
           - name: _fivetran_synced
-            data_type: timestamp_tz
-            description: ""
+            description: "Timestamp when the record was last synced by Fivetran."
+            tests:
+              - not_null
 
       - name: products
-        description: ""
+        description: "List of available products and their attributes."
         columns:
           - name: product_id
-            data_type: varchar
-            description: ""
+            description: "Unique identifier for each product."
+            tests:
+              - not_null
+              - unique
           - name: price
-            data_type: float
-            description: ""
+            description: "Unit price of the product."
+            tests:
+              - not_null
+              - dbt_utils.accepted_range:
+                  min_value: 0
           - name: name
-            data_type: varchar
-            description: ""
+            description: "Name of the product."
+            tests:
+              - not_null
           - name: inventory
-            data_type: number
-            description: ""
+            description: "Number of items available in stock."
+            tests:
+              - dbt_utils.accepted_range:
+                  min_value: 0
           - name: _fivetran_deleted
-            data_type: boolean
-            description: ""
+            description: "Indicates whether the record was deleted by Fivetran."
+            tests:
+              - not_null
           - name: _fivetran_synced
-            data_type: timestamp_tz
-            description: ""
+            description: "Timestamp when the record was last synced by Fivetran."
+            tests:
+              - not_null
 
       - name: promos
-        description: ""
+        description: "Promotions and discounts available to customers."
         columns:
           - name: promo_id
-            data_type: varchar
-            description: ""
+            description: "Unique identifier for each promotion."
+            tests:
+              - not_null
+              - unique
           - name: discount
-            data_type: number
-            description: ""
+            description: "Discount amount or percentage offered."
+            tests:
+              - not_null
+              - dbt_utils.accepted_range:
+                  min_value: 0
           - name: status
-            data_type: varchar
-            description: ""
+            description: "Status of the promotion (e.g., active, expired)."
+            tests:
+              - not_null
           - name: _fivetran_deleted
-            data_type: boolean
-            description: ""
+            description: "Indicates whether the record was deleted by Fivetran."
+            tests:
+              - not_null
           - name: _fivetran_synced
-            data_type: timestamp_tz
-            description: ""
+            description: "Timestamp when the record was last synced by Fivetran."
+            tests:
+              - not_null
 
       - name: users
-        description: ""
+        description: "Information about registered users and their contact details."
         columns:
           - name: user_id
-            data_type: varchar
-            description: ""
+            description: "Unique identifier for each user."
+            tests:
+              - not_null
+              - unique
           - name: updated_at
-            data_type: timestamp_tz
-            description: ""
+            description: "Timestamp when the user record was last updated."
           - name: address_id
-            data_type: varchar
-            description: ""
+            description: "Identifier for the user's primary address."
+            tests:
+              - not_null
           - name: last_name
-            data_type: varchar
-            description: ""
+            description: "User's last name."
+            tests:
+              - not_null
           - name: created_at
-            data_type: timestamp_tz
-            description: ""
+            description: "Timestamp when the user account was created."
           - name: phone_number
-            data_type: varchar
-            description: ""
+            description: "User's contact phone number."
+            tests:
+              - not_null
+              - dbt_utils.accepted_range:
+                  min_value: 0
           - name: total_orders
-            data_type: number
-            description: ""
+            description: "Total number of orders placed by the user."
+            tests:
+              - dbt_utils.accepted_range:
+                  min_value: 0
           - name: first_name
-            data_type: varchar
-            description: ""
+            description: "User's first name."
+            tests:
+              - not_null
           - name: email
-            data_type: varchar
-            description: ""
+            description: "User's email address."
           - name: _fivetran_deleted
-            data_type: boolean
-            description: ""
+            description: "Indicates whether the record was deleted by Fivetran."
+            tests:
+              - not_null
           - name: _fivetran_synced
-            data_type: timestamp_tz
-            description: ""
+            description: "Timestamp when the record was last synced by Fivetran."
+            tests:
+              - not_null
