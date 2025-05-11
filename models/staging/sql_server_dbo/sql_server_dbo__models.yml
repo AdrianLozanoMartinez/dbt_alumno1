@@ -121,6 +121,84 @@ models:
         tests:
           - not_null
 
+  - name: stg_sql_server_dbo__orders
+    description: Information about customer orders, including status and costs.
+    columns:
+      - name: order_id
+        data_type: varchar
+        description: Unique identifier for each order.
+        tests:
+          - not_null
+          - unique
+      - name: shipping_service
+        data_type: varchar
+        description: Service used for shipping the order.
+        tests:
+          - not_null
+      - name: shipping_cost
+        data_type: float
+        description: Cost associated with shipping.
+        tests:
+          - not_null
+          - dbt_utils.accepted_range:
+              min_value: 0
+      - name: address_id
+        data_type: varchar
+        description: Identifier of the address where the order is shipped.
+        tests:
+          - not_null
+      - name: created_at
+        data_type: timestamp_tz
+        description: Timestamp when the order was placed.
+        tests:
+          - not_null
+      - name: promo_id
+        data_type: varchar
+        description: Identifier of the promotion applied to the order, if any.
+      - name: estimated_delivery_at
+        data_type: timestamp_tz
+        description: Estimated delivery date and time.
+      - name: order_cost
+        data_type: float
+        description: Total cost of the order before tax and discounts.
+        tests:
+          - not_null
+          - dbt_utils.accepted_range:
+              min_value: 0
+      - name: user_id
+        data_type: varchar
+        description: Identifier of the user who placed the order.
+        tests:
+          - not_null
+      - name: order_total
+        data_type: float
+        description: Final order amount including all costs and discounts.
+        tests:
+          - not_null
+          - dbt_utils.accepted_range:
+              min_value: 0
+      - name: delivered_at
+        data_type: timestamp_tz
+        description: Actual delivery date and time.
+      - name: tracking_id
+        data_type: varchar
+        description: Tracking number for shipment tracking.
+        tests:
+          - not_null
+      - name: status
+        data_type: varchar
+        description: Current status of the order (e.g., shipped, delivered).
+        tests:
+          - not_null
+      - name: _fivetran_deleted
+        data_type: boolean
+        description: Indicates whether the record was deleted by Fivetran.
+      - name: _fivetran_synced
+        data_type: timestamp_tz
+        description: Timestamp when the record was last synced by Fivetran.
+        tests:
+          - not_null
+
   - name: products
     description: List of available products and their attributes.
     columns:
