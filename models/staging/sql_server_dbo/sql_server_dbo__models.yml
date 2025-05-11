@@ -1,0 +1,75 @@
+version: 2
+
+models:
+  - name: stg_sql_server_dbo__addresses
+    config:
+      contract:
+        enforced: true
+    description: Contains address details for users and orders.
+    columns:
+      - name: address_id
+        data_type: varchar
+        constraints:
+          - type: not_null
+        description: Unique identifier for each address.
+        tests:
+          - not_null
+          - unique
+      - name: zipcode
+        data_type: number
+        description: Postal code associated with the address.
+        tests:
+              - dbt_utils.accepted_range:
+                  min_value: 0
+      - name: country
+        data_type: varchar
+        description: Country name associated with the address.
+        tests:
+              - not_null
+      - name: address
+        data_type: varchar
+        description: Street address and number.
+      - name: state
+        data_type: varchar
+        description: State or province within the country.
+      - name: _fivetran_deleted
+        data_type: boolean
+        description: Indicates whether the record was deleted by Fivetran.
+      - name: _fivetran_synced
+        data_type: timestamp_tz
+        description: Timestamp when the record was last synced by Fivetran.
+        tests:
+          - not_null
+
+  - name: stg_sql_server_dbo__order_items
+    description: Details of items included in each order.
+    columns:
+      - name: order_id
+        data_type: varchar
+        constraints:
+          - type: not_null
+        description: Identifier of the order this item belongs to.
+        tests:
+          - not_null
+
+      - name: product_id
+        data_type: varchar
+        description: Identifier of the purchased product.
+        tests:
+          - not_null
+
+      - name: quantity
+        data_type: number
+        description: Quantity of the product in the order.
+        tests:
+          - not_null
+
+      - name: _fivetran_deleted
+        data_type: boolean
+        description: Indicates whether the record was deleted by Fivetran.
+
+      - name: _fivetran_synced
+        data_type: timestamp_tz
+        description: Unique identifier for each order.
+        tests:
+          - not_null
