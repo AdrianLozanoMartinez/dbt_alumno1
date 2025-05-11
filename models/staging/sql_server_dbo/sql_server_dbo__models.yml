@@ -51,18 +51,59 @@ models:
         description: Identifier of the order this item belongs to.
         tests:
           - not_null
-
       - name: product_id
         data_type: varchar
         description: Identifier of the purchased product.
         tests:
           - not_null
-
       - name: quantity
         data_type: number
         description: Quantity of the product in the order.
         tests:
           - not_null
+      - name: _fivetran_deleted
+        data_type: boolean
+        description: Indicates whether the record was deleted by Fivetran.
+      - name: _fivetran_synced
+        data_type: timestamp_tz
+        description: Unique identifier for each order.
+        tests:
+          - not_null
+
+  - name: stg_sql_server_dbo__events
+    description: Tracks user interactions such as clicks, views, and conversions.
+    columns:
+      - name: event_id
+        data_type: varchar
+        description: Unique identifier for each event.
+
+      - name: page_url
+        data_type: varchar
+        description: URL of the page where the event occurred.
+
+      - name: event_type
+        data_type: varchar
+        description: Type of event, such as 'click' or 'view'.
+
+      - name: user_id
+        data_type: varchar
+        description: Identifier of the user who triggered the event.
+
+      - name: product_id
+        data_type: varchar
+        description: Product associated with the event.
+
+      - name: session_id
+        data_type: varchar
+        description: Identifier for the user's session.
+
+      - name: created_at
+        data_type: timestamp_ntz
+        description: Timestamp when the event occurred.
+
+      - name: order_id
+        data_type: varchar
+        description: Order linked to the event, if applicable.
 
       - name: _fivetran_deleted
         data_type: boolean
@@ -70,6 +111,4 @@ models:
 
       - name: _fivetran_synced
         data_type: timestamp_tz
-        description: Unique identifier for each order.
-        tests:
-          - not_null
+        description: Timestamp when the record was last synced by Fivetran.
