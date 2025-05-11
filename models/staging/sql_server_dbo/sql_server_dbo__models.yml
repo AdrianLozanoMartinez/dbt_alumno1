@@ -264,3 +264,56 @@ models:
         description: Timestamp when the record was last synced by Fivetran.
         tests:
           - not_null
+
+  - name: users
+    description: Information about registered users and their contact details.
+    columns:
+      - name: user_id
+        data_type: varchar
+        description: Unique identifier for each user.
+        tests:
+          - not_null
+          - unique
+      - name: updated_at
+        data_type: timestamp_tz
+        description: Timestamp when the user record was last updated.
+      - name: address_id
+        data_type: varchar
+        description: Identifier for the user's primary address.
+        tests:
+          - not_null
+      - name: last_name
+        data_type: varchar
+        description: User's last name.
+        tests:
+          - not_null
+      - name: created_at
+        data_type: timestamp_tz
+        description: Timestamp when the user account was created.
+      - name: phone_number
+        data_type: varchar
+        description: User's contact phone number.
+        tests:
+          - not_null
+      - name: total_orders
+        data_type: number
+        description: Total number of orders placed by the user.
+        tests:
+          - dbt_utils.accepted_range:
+              min_value: 0
+      - name: first_name
+        data_type: varchar
+        description: User's first name.
+        tests:
+          - not_null
+      - name: email
+        data_type: varchar
+        description: User's email address.
+      - name: _fivetran_deleted
+        data_type: boolean
+        description: Indicates whether the record was deleted by Fivetran.
+      - name: _fivetran_synced
+        data_type: timestamp_tz
+        description: Timestamp when the record was last synced by Fivetran.
+        tests:
+          - not_null
