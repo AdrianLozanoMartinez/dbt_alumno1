@@ -234,3 +234,33 @@ models:
         description: Timestamp when the record was last synced by Fivetran.
         tests:
           - not_null
+
+  - name: promos
+    description: Promotions and discounts available to customers.
+    columns:
+      - name: promo_id
+        data_type: varchar
+        description: Unique identifier for each promotion.
+        tests:
+          - not_null
+          - unique
+      - name: discount
+        data_type: number
+        description: Discount amount or percentage offered.
+        tests:
+          - not_null
+          - dbt_utils.accepted_range:
+              min_value: 0
+      - name: status
+        data_type: varchar
+        description: Status of the promotion (e.g., active, expired).
+        tests:
+          - not_null
+      - name: _fivetran_deleted
+        data_type: boolean
+        description: Indicates whether the record was deleted by Fivetran.
+      - name: _fivetran_synced
+        data_type: timestamp_tz
+        description: Timestamp when the record was last synced by Fivetran.
+        tests:
+          - not_null
