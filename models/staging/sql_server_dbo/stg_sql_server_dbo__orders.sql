@@ -15,17 +15,23 @@ order_casted AS (
         , shipping_service
         , shipping_cost
         , address_id
-        , created_at
+        , CAST(created_at AS TIMESTAMP)::DATE AS created_at_date
+        , CAST(created_at AS TIMESTAMP)::TIME AS created_at_time
         , promo_id
         , estimated_delivery_at
+        , CAST(estimated_delivery_at AS TIMESTAMP)::DATE AS estimated_delivery_at_date
+        , CAST(estimated_delivery_at AS TIMESTAMP)::TIME AS estimated_delivery_at_time
         , order_cost
         , user_id
         , order_total
         , delivered_at
-        , tracking_id
+        , CAST(delivered_at AS TIMESTAMP)::DATE AS delivered_at_date
+        , CAST(delivered_at AS TIMESTAMP)::TIME AS delivered_at_time
         , status
         , _fivetran_deleted
         , _fivetran_synced
+        , CAST(_fivetran_synced AS TIMESTAMP)::DATE AS _fivetran_synced_date
+        , CAST(_fivetran_synced AS TIMESTAMP)::TIME AS _fivetran_synced_time
     FROM src_orders
     )
 
