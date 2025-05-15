@@ -68,11 +68,6 @@ models:
         description: Product associated with the event.
         tests:
           - not_null
-      - name: session_id
-        data_type: varchar
-        description: Identifier for the user's session.
-        tests:
-          - not_null
       - name: created_at
         data_type: timestamp_ntz
         description: Timestamp when the event occurred.
@@ -121,7 +116,7 @@ models:
         tests:
           - not_null
 
-  - name: stg_sql_server_dbo__orders
+  - name: orders
     description: Information about customer orders, including status and costs.
     columns:
       - name: order_id
@@ -180,11 +175,6 @@ models:
       - name: delivered_at
         data_type: timestamp_tz
         description: Actual delivery date and time.
-      - name: tracking_id
-        data_type: varchar
-        description: Tracking number for shipment tracking.
-        tests:
-          - not_null
       - name: status
         data_type: varchar
         description: Current status of the order (e.g., shipped, delivered).

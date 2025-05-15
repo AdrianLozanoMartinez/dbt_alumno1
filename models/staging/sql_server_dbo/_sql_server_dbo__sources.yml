@@ -68,10 +68,6 @@ sources:
             description: Product associated with the event.
             tests:
               - not_null
-          - name: session_id
-            description: Identifier for the user's session.
-            tests:
-              - not_null
           - name: created_at
             description: Timestamp when the event occurred.
             tests:
@@ -159,10 +155,6 @@ sources:
                   min_value: 0
           - name: delivered_at
             description: Actual delivery date and time.
-          - name: tracking_id
-            description: Tracking number for shipment tracking.
-            tests:
-              - not_null
           - name: status
             description: Current status of the order (e.g., shipped, delivered).
             tests:

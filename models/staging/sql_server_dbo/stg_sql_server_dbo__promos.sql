@@ -16,6 +16,8 @@ address_casted AS (
         , status
         , _fivetran_deleted
         , _fivetran_synced
+        , CAST(_fivetran_synced AS TIMESTAMP)::DATE AS _fivetran_synced_date
+        , CAST(_fivetran_synced AS TIMESTAMP)::TIME AS _fivetran_synced_time
     FROM src_promos
     )
 
