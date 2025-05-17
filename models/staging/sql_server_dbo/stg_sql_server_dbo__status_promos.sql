@@ -7,8 +7,6 @@
 WITH src_status AS (
     SELECT DISTINCT status 
     FROM {{ source('sql_server_dbo', 'promos') }}
-    WHERE status IS NOT NULL
-    AND TRIM(status) != ''
 )
 
 SELECT
