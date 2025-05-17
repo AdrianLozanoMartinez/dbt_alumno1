@@ -13,7 +13,8 @@ order_casted AS (
     SELECT
           {{ dbt_utils.generate_surrogate_key(['order_id']) }} AS order_id_hash
         , o.order_id
-        , o.shipping_service
+        , sh.shipping_service_id
+        , sh.shipping_service
         , o.shipping_cost
         , o.address_id
         , CAST(o.created_at AS TIMESTAMP)::DATE AS created_at_date
@@ -35,6 +36,8 @@ order_casted AS (
     FROM src_orders o
     LEFT JOIN {{ ref('stg_sql_server_dbo__status_orders') }} s
         ON o.status = s.status_order
+    LEFT JOIN {{ ref('stg_sql_server_dbo__shipping_services') }} sh
+        ON o.shipping_service = sh.shipping_service
 )
 
 SELECT * FROM order_casted

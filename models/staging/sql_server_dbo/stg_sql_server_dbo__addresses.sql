@@ -2,7 +2,7 @@
   config(
     materialized='view'
   )
-}}
+}} 
 
 WITH src_addresses AS (
     SELECT * 
