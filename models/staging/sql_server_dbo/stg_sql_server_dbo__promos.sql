@@ -11,7 +11,8 @@ WITH src_promos AS (
 
 address_casted AS (
     SELECT
-          {{ dbt_utils.generate_surrogate_key(['promo_id']) }} AS promo_id
+          {{ dbt_utils.generate_surrogate_key(['promo_id']) }} AS promo_id_hash
+        , promo_id
         , discount
         , status
         , _fivetran_deleted

@@ -11,7 +11,8 @@ WITH src_orders AS (
 
 order_casted AS (
     SELECT
-          {{ dbt_utils.generate_surrogate_key(['order_id']) }} AS order_id
+          {{ dbt_utils.generate_surrogate_key(['order_id']) }} AS order_id_hash
+        , order_id
         , shipping_service
         , shipping_cost
         , address_id
