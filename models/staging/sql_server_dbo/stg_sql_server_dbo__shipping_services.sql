@@ -7,8 +7,6 @@
 WITH src_shipping_services AS (
     SELECT DISTINCT shipping_service 
     FROM {{ source('sql_server_dbo', 'orders') }}
-    WHERE shipping_service IS NOT NULL
-      AND TRIM(shipping_service) != ''
 )
 
 SELECT
