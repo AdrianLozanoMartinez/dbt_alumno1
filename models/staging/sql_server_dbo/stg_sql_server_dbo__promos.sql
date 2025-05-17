@@ -9,7 +9,7 @@ WITH src_promos AS (
     FROM {{ source('sql_server_dbo', 'promos') }}
 ),
 
-address_casted AS (
+promos_casted AS (
     SELECT
           {{ dbt_utils.generate_surrogate_key(['promo_id']) }} AS promo_id_hash
         , promo_id
@@ -22,4 +22,4 @@ address_casted AS (
     FROM src_promos
     )
 
-SELECT * FROM address_casted
+SELECT * FROM promos_casted

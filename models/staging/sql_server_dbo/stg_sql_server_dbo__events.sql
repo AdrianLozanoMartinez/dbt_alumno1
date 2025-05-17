@@ -14,6 +14,7 @@ events_casted AS (
           {{ dbt_utils.generate_surrogate_key(['event_id']) }} AS event_id_hash
         , event_id
         , page_url
+        , REGEXP_REPLACE(page_url, '^https?://', '') AS page_url_sin_https
         , event_type
         , user_id
         , product_id

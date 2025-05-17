@@ -57,7 +57,7 @@ sources:
           - name: page_url
             description: URL of the page where the event occurred.
           - name: event_type
-            description: Type of event, such as 'click' or 'view'.
+            description: Type of event.
             tests:
               - not_null
           - name: user_id
@@ -66,6 +66,10 @@ sources:
               - not_null
           - name: product_id
             description: Product associated with the event.
+            tests:
+              - not_null
+          - name: session_id
+            description: Identifier for the user's session.
             tests:
               - not_null
           - name: created_at
@@ -154,7 +158,13 @@ sources:
               - dbt_utils.accepted_range:
                   min_value: 0
           - name: delivered_at
+            tests:
+              - not_null
             description: Actual delivery date and time.
+          - name: tracking_id
+            description: Tracking number for shipment tracking.
+            tests:
+              - not_null
           - name: status
             description: Current status of the order (e.g., shipped, delivered).
             tests:
@@ -165,7 +175,7 @@ sources:
             description: Timestamp when the record was last synced by Fivetran.
             tests:
               - not_null
-
+              
       - name: products
         description: List of available products and their attributes.
         columns:

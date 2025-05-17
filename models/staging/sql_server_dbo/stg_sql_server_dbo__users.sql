@@ -9,7 +9,7 @@ WITH src_users AS (
     FROM {{ source('sql_server_dbo', 'users') }}
 ),
 
-address_casted AS (
+users_casted AS (
     SELECT
           {{ dbt_utils.generate_surrogate_key(['user_id']) }} AS user_id_hash
         , user_id
@@ -32,4 +32,4 @@ address_casted AS (
     FROM src_users
     )
 
-SELECT * FROM address_casted
+SELECT * FROM users_casted
