@@ -11,7 +11,8 @@ WITH src_addresses AS (
 
 address_casted AS (
     SELECT
-          {{ dbt_utils.generate_surrogate_key(['address_id']) }} AS address_id
+          {{ dbt_utils.generate_surrogate_key(['address_id']) }} AS address_id_hash
+        , address_id
         , LPAD(zipcode, 5, '0') AS zipcode 
         , country
         , address

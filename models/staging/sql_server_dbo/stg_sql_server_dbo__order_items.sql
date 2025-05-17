@@ -4,22 +4,36 @@
   )
 }}
 
-WITH src_order_items AS (
-    SELECT * 
+WITH order_items AS (
+    SELECT
+        {{ dbt_utils.generate_surrogate_key(['order_id', 'product_id']) }} AS order_item_id,
+        order_id,
+        product_id,
+        quantity,
+        _fivetran_deleted,
+        _fivetran_synced,
+        CAST(_fivetran_synced AS TIMESTAMP)::DATE AS _fivetran_synced_date,
+        CAST(_fivetran_synced AS TIMESTAMP)::TIME AS _fivetran_synced_time
     FROM {{ source('sql_server_dbo', 'order_items') }}
 ),
 
-order_items_casted AS (
+products AS (
     SELECT
-        {{ dbt_utils.generate_surrogate_key(['order_id', 'product_id']) }} AS order_item_id
-        , order_id
-        , product_id
-        , quantity
-        , _fivetran_deleted
-        , _fivetran_synced
-        , CAST(_fivetran_synced AS TIMESTAMP)::DATE AS _fivetran_synced_date
-        , CAST(_fivetran_synced AS TIMESTAMP)::TIME AS _fivetran_synced_time
-    FROM src_order_items
-    )
+        product_id,
+        price
+    FROM {{ ref('stg_sql_server_dbo__products') }}
+)
 
-SELECT * FROM order_items_casted
+SELECT
+    oi.order_item_id,
+    oi.order_id,
+    p.product_id,
+    oi.quantity,
+    p.price,
+    oi._fivetran_deleted,
+    oi._fivetran_synced,
+    oi._fivetran_synced_date,
+    oi._fivetran_synced_time
+FROM order_items oi
+LEFT JOIN products p
+  ON oi.product_id = p.product_id
