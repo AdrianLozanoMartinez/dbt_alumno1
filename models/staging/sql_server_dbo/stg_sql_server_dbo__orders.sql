@@ -12,28 +12,29 @@ WITH src_orders AS (
 order_casted AS (
     SELECT
           {{ dbt_utils.generate_surrogate_key(['order_id']) }} AS order_id_hash
-        , order_id
-        , shipping_service
-        , shipping_cost
-        , address_id
-        , CAST(created_at AS TIMESTAMP)::DATE AS created_at_date
-        , CAST(created_at AS TIMESTAMP)::TIME AS created_at_time
-        , promo_id
-        , estimated_delivery_at
-        , CAST(estimated_delivery_at AS TIMESTAMP)::DATE AS estimated_delivery_at_date
-        , CAST(estimated_delivery_at AS TIMESTAMP)::TIME AS estimated_delivery_at_time
-        , order_cost
-        , user_id
-        , order_total
-        , delivered_at
-        , CAST(delivered_at AS TIMESTAMP)::DATE AS delivered_at_date
-        , CAST(delivered_at AS TIMESTAMP)::TIME AS delivered_at_time
-        , status
-        , _fivetran_deleted
-        , _fivetran_synced
-        , CAST(_fivetran_synced AS TIMESTAMP)::DATE AS _fivetran_synced_date
-        , CAST(_fivetran_synced AS TIMESTAMP)::TIME AS _fivetran_synced_time
-    FROM src_orders
-    )
+        , o.order_id
+        , o.shipping_service
+        , o.shipping_cost
+        , o.address_id
+        , CAST(o.created_at AS TIMESTAMP)::DATE AS created_at_date
+        , CAST(o.created_at AS TIMESTAMP)::TIME AS created_at_time
+        , o.promo_id
+        , o.estimated_delivery_at
+        , CAST(o.estimated_delivery_at AS TIMESTAMP)::DATE AS estimated_delivery_at_date
+        , CAST(o.estimated_delivery_at AS TIMESTAMP)::TIME AS estimated_delivery_at_time
+        , o.order_cost
+        , o.user_id
+        , o.order_total
+        , o.delivered_at
+        , CAST(o.delivered_at AS TIMESTAMP)::DATE AS delivered_at_date
+        , CAST(o.delivered_at AS TIMESTAMP)::TIME AS delivered_at_time
+        , s.status_order_id      
+        , s.status_order        
+        , o._fivetran_deleted
+        , o._fivetran_synced
+    FROM src_orders o
+    LEFT JOIN {{ ref('stg_sql_server_dbo__status_orders') }} s
+        ON o.status = s.status_order
+)
 
 SELECT * FROM order_casted
