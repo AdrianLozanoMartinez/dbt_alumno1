@@ -11,8 +11,7 @@ WITH src_products AS (
 
 products_casted AS (
     SELECT
-          {{ dbt_utils.generate_surrogate_key(['product_id']) }} AS product_id_hash
-        , product_id
+        product_id
         , price
         , name
         , inventory

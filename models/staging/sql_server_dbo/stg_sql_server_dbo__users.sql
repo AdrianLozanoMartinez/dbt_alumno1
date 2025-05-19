@@ -11,8 +11,7 @@ WITH src_users AS (
 
 users_casted AS (
     SELECT
-          {{ dbt_utils.generate_surrogate_key(['user_id']) }} AS user_id_hash
-        , user_id
+        user_id
         , updated_at
         , CAST(updated_at AS TIMESTAMP)::DATE AS updated_at_date
         , CAST(updated_at AS TIMESTAMP)::TIME AS updated_at_time

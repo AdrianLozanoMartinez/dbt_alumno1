@@ -1,24 +1,11 @@
 version: 2
 
 models:
-  - name: addresses
-    config:
-      contract:
-        enforced: true
+  - name: stg_sql_server_dbo__addresses
     description: Contains address details for users and orders.
     columns:
-      - name: address_id_hash
-        data_type: varchar
-        constraints:
-          - type: not_null
-        description: Unique identifier with hash for each address.
-        tests:
-          - not_null
-          - unique
       - name: address_id
         data_type: varchar
-        constraints:
-          - type: not_null
         description: Unique identifier for each address.
         tests:
           - not_null
@@ -27,13 +14,13 @@ models:
         data_type: number
         description: Postal code associated with the address.
         tests:
-              - dbt_utils.accepted_range:
-                  min_value: 0
+          - dbt_utils.accepted_range:
+              min_value: 0
       - name: country
         data_type: varchar
         description: Country name associated with the address.
         tests:
-              - not_null
+          - not_null
       - name: address
         data_type: varchar
         description: Street address and number.
@@ -59,15 +46,9 @@ models:
         tests:
           - not_null
 
-  - name: events
+  - name: stg_sql_server_dbo__events
     description: Tracks user interactions such as clicks, views, and conversions.
     columns:
-      - name: event_id_hash
-        data_type: varchar
-        description: Unique identifier with hash for each event.
-        tests:
-          - not_null
-          - unique
       - name: event_id
         data_type: varchar
         description: Unique identifier for each event.
@@ -90,11 +71,17 @@ models:
         description: Identifier of the user who triggered the event.
         tests:
           - not_null
+          - relationships:
+              to: ref('stg_sql_server_dbo__users')
+              field: user_id 
       - name: product_id
         data_type: varchar
         description: Product associated with the event.
         tests:
           - not_null
+          - relationships:
+              to: ref('stg_sql_server_dbo__products')
+              field: product_id 
       - name: created_at
         data_type: timestamp_ntz
         description: Timestamp when the event occurred.
@@ -115,6 +102,9 @@ models:
         description: Order linked to the event, if applicable.
         tests:
           - not_null
+          - relationships:
+              to: ref('stg_sql_server_dbo__orders')
+              field: order_id 
       - name: _fivetran_deleted
         data_type: boolean
         description: Indicates whether the record was deleted by Fivetran.
@@ -134,28 +124,31 @@ models:
         tests:
           - not_null
 
-  - name: order_items
+  - name: stg_sql_server_dbo__order_items
     description: Details of items included in each order.
     columns:
       - name: order_item_id
         data_type: varchar
-        constraints:
-          - type: not_null
         description: Identifier of the order_item this item belongs to.
         tests:
           - not_null
+          - unique
       - name: order_id
         data_type: varchar
-        constraints:
-          - type: not_null
         description: Identifier of the order this item belongs to.
         tests:
           - not_null
+          - relationships:
+              to: ref('stg_sql_server_dbo__orders')
+              field: order_id 
       - name: product_id
         data_type: varchar
         description: Identifier of the purchased product.
         tests:
           - not_null
+          - relationships:
+              to: ref('stg_sql_server_dbo__products')
+              field: product_id 
       - name: quantity
         data_type: number
         description: Quantity of the product in the order.
@@ -180,15 +173,9 @@ models:
         tests:
           - not_null
 
-  - name: orders
+  - name: stg_sql_server_dbo__orders
     description: Information about customer orders, including status and costs.
     columns:
-      - name: order_id_hash
-        data_type: varchar
-        description: Unique identifier for each order with hash.
-        tests:
-          - not_null
-          - unique
       - name: order_id
         data_type: varchar
         description: Unique identifier for each order.
@@ -198,6 +185,10 @@ models:
       - name: shipping_service_id
         data_type: varchar
         description: Identifier of the shipping_service.
+        tests:
+          - relationships:
+              to: ref('stg_sql_server_dbo__shipping_services')
+              field: shipping_service_id
       - name: shipping_service
         data_type: varchar
         description: Name associated with shipping.
@@ -213,6 +204,9 @@ models:
         description: Identifier of the address where the order is shipped.
         tests:
           - not_null
+          - relationships:
+              to: ref('stg_sql_server_dbo__addresses')
+              field: address_id
       - name: created_at
         data_type: timestamp_tz
         description: Timestamp when the order was placed.
@@ -231,6 +225,10 @@ models:
       - name: promo_id
         data_type: varchar
         description: Identifier of the promotion applied to the order, if any.
+        tests:
+          - relationships:
+              to: ref('stg_sql_server_dbo__promos')
+              field: promo_id 
       - name: estimated_delivery_at
         data_type: timestamp_tz
         description: Estimated delivery date and time.
@@ -252,6 +250,9 @@ models:
         description: Identifier of the user who placed the order.
         tests:
           - not_null
+          - relationships:
+              to: ref('stg_sql_server_dbo__users')
+              field: user_id 
       - name: order_total
         data_type: float
         description: Final order amount including all costs and discounts.
@@ -273,6 +274,9 @@ models:
         description: Identifier of the status who placed the order.
         tests:
           - not_null
+          - relationships:
+              to: ref('stg_sql_server_dbo__status_orders')
+              field: status_order_id 
       - name: status_order
         data_type: varchar
         description: Current status of the order (e.g., shipped, delivered).
@@ -297,15 +301,9 @@ models:
         tests:
           - not_null
 
-  - name: products
+  - name: stg_sql_server_dbo__products
     description: List of available products and their attributes.
     columns:
-      - name: product_id_hash
-        data_type: varchar
-        description: Unique identifier with hash for each product.
-        tests:
-          - not_null
-          - unique
       - name: product_id
         data_type: varchar
         description: Unique identifier for each product.
@@ -344,15 +342,9 @@ models:
         tests:
           - not_null
 
-  - name: promos
+  - name: stg_sql_server_dbo__promos
     description: Promotions and discounts available to customers.
     columns:
-      - name: promo_id_hash
-        data_type: varchar
-        description: Unique identifier with hash for each promotion.
-        tests:
-          - not_null
-          - unique
       - name: promo_id
         data_type: varchar
         description: Unique identifier for each promotion.
@@ -371,6 +363,9 @@ models:
         description: Unique identifier for each status.
         tests:
           - not_null
+          - relationships:
+              to: ref('stg_sql_server_dbo__status_promos')
+              field: status_promo_id 
       - name: status_promo
         data_type: varchar
         description: Status of the promotion (e.g., active, expired).
@@ -390,15 +385,9 @@ models:
         tests:
           - not_null
 
-  - name: users
+  - name: stg_sql_server_dbo__users
     description: Information about registered users and their contact details.
     columns:
-      - name: user_id_hash
-        data_type: varchar
-        description: Unique identifier with hash for each user.
-        tests:
-          - not_null
-          - unique
       - name: user_id
         data_type: varchar
         description: Unique identifier for each user.
@@ -419,6 +408,9 @@ models:
         description: Identifier for the user's primary address.
         tests:
           - not_null
+          - relationships:
+              to: ref('stg_sql_server_dbo__addresses')
+              field: address_id
       - name: last_name
         data_type: varchar
         description: User's last name.
@@ -466,7 +458,7 @@ models:
         tests:
           - not_null
 
-  - name: shipping_services
+  - name: stg_sql_server_dbo__shipping_services
     description: Shipping services
     columns:
       - name: shipping_service_id
@@ -474,13 +466,14 @@ models:
         description: Identifier of the shipping_service.
         tests:
           - not_null
+          - unique
       - name: shipping_service
         data_type: varchar
         description: Name associated with shipping.
         tests:
           - not_null
 
-  - name: status_orders
+  - name: stg_sql_server_dbo__status_orders
     description: Status orders
     columns:
       - name: status_order_id
@@ -488,13 +481,14 @@ models:
         description: Identifier of the status who placed the order.
         tests:
           - not_null
+          - unique
       - name: status_order
         data_type: varchar
         description: Current status of the order (e.g., shipped, delivered).
         tests:
           - not_null
 
-  - name: promos
+  - name: stg_sql_server_dbo__status_promos
     description: Promos
     columns:
       - name: status_promo_id
@@ -502,6 +496,7 @@ models:
         description: Unique identifier for each status.
         tests:
           - not_null
+          - unique
       - name: status_promo
         data_type: varchar
         description: Status of the promotion (e.g., active, expired).
