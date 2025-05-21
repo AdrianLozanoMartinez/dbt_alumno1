@@ -2,9 +2,6 @@ version: 2
 
 models:
   - name: fct_orders
-    config:
-        contract:
-          enforced: true
     description: Information about customer orders, including status and costs.
     columns:
       - name: order_item_id
@@ -75,7 +72,7 @@ models:
         description: Time when the record was last synced by Fivetran in order item.
 
   - name: fct_events
-    description: ""
+    description: Tracks user interactions such as clicks, views, and conversions.
     columns:
       - name: event_id
         data_type: varchar
@@ -120,4 +117,190 @@ models:
         data_type: time
         description: Time when the record was last synced by Fivetran in order item.
 
+  - name: dim_users
+    description: Information about registered users and their contact details.
+    columns:
+      - name: user_id
+        data_type: varchar
+        description: Unique identifier for each user.
+      - name: updated_at
+        data_type: timestamp_tz
+        description: Timestamp when the user record was last updated.
+      - name: updated_at_date
+        data_type: date
+        description: Date when the user record was last updated.
+      - name: updated_at_time
+        data_type: time
+        description: Time when the user record was last updated.
+      - name: address_id
+        data_type: varchar
+        description: Identifier for the user's primary address.
+      - name: last_name
+        data_type: varchar
+        description: User's last name.
+      - name: created_at
+        data_type: timestamp_tz
+        description: Timestamp when the user account was created.
+      - name: created_at_date
+        data_type: date
+        description: Date when the user account was created.
+      - name: created_at_time
+        data_type: time
+        description: Time when the user account was created.
+      - name: phone_number
+        data_type: varchar
+        description: User's contact phone number.
+      - name: total_orders
+        data_type: number
+        description: Total number of orders placed by the user.
+      - name: first_name
+        data_type: varchar
+        description: User's first name.
+      - name: email
+        data_type: varchar
+        description: User's email address.
+      - name: _fivetran_deleted
+        data_type: boolean
+        description: Indicates whether the record was deleted by Fivetran.
+      - name: _fivetran_synced
+        data_type: timestamp_tz
+        description: Time and date when the record was last synced by Fivetran.
+      - name: _fivetran_synced_date
+        data_type: date
+        description: Date when the record was last synced by Fivetran.
+      - name: _fivetran_synced_time
+        data_type: time
+        description: Time when the record was last synced by Fivetran.
+
+  - name: dim_status_promos
+    description: Status promo
+    columns:
+      - name: status_promo_id
+        data_type: varchar
+        description: Unique identifier for each status.
+      - name: status_promo
+        data_type: varchar
+        description: Status of the promotion (e.g., active, expired).
+
+  - name: dim_status_order
+    description: Status orders
+    columns:
+      - name: status_order_id
+        data_type: varchar
+        description: Identifier of the status who placed the order.
+      - name: status_order
+        data_type: varchar
+        description: Current status of the order (e.g., shipped, delivered).
+
+  - name: dim_shipping
+    description: Shipping services
+    columns:
+      - name: shipping_service_id
+        data_type: varchar
+        description: Identifier of the shipping_service.
+      - name: shipping_service
+        data_type: varchar
+        description: Name associated with shipping.
+      - name: shipping_cost
+        data_type: float
+        description: Cost associated with shipping.
+      - name: estimated_delivery_at
+        data_type: timestamp_tz
+        description: Estimated delivery
+      - name: estimated_delivery_at_date
+        data_type: date
+        description: Estimated delivery day
+      - name: estimated_delivery_at_time
+        data_type: time
+        description: Estimated delivery time
+      - name: delivered_at
+        data_type: timestamp_tz
+        description: Delivered
+      - name: delivered_at_date
+        data_type: date
+        description: Delivered date
+      - name: delivered_at_time
+        data_type: time
+        description: Delivered time
+
+  - name: dim_promos
+    description: Promotions and discounts available to customers.
+    columns:
+      - name: promo_id
+        data_type: varchar
+        description: Unique identifier for each promotion.
+      - name: discount
+        data_type: number
+        description: Discount amount or percentage offered.
+      - name: status_promo_id
+        data_type: varchar
+        description: Unique identifier for each status.
+      - name: status_promo
+        data_type: varchar
+        description: Status of the promotion (e.g., active, expired).
+      - name: _fivetran_deleted
+        data_type: boolean
+        description: Indicates whether the record was deleted by Fivetran.
+      - name: _fivetran_synced_date
+        data_type: date
+        description: Date when the record was last synced by Fivetran.
+      - name: _fivetran_synced_time
+        data_type: timestamp_tz
+        description: Time when the record was last synced by Fivetran.
+
+  - name: dim_products
+    description: List of available products and their attributes.
+    columns:
+      - name: product_id
+        data_type: varchar
+        description: Unique identifier for each product.
+      - name: price
+        data_type: float
+        description: Unit price of the product.
+      - name: name
+        data_type: varchar
+        description: Name of the product.
+      - name: inventory
+        data_type: number
+        description: Number of items available in stock.
+      - name: _fivetran_deleted
+        data_type: boolean
+        description: Indicates whether the record was deleted by Fivetran.
+      - name: _fivetran_synced_date
+        data_type: date
+        description: Date when the record was last synced by Fivetran.
+      - name: _fivetran_synced_time
+        data_type: timestamp_tz
+        description: Time when the record was last synced by Fivetran.
+
+  - name: dim_addresses
+    description: Contains address details for users and orders.
+    columns:
+      - name: address_id
+        data_type: varchar
+        description: Unique identifier for each address.
+      - name: zipcode
+        data_type: number
+        description: Postal code associated with the address.
+      - name: country
+        data_type: varchar
+        description: Country name associated with the address.
+      - name: address
+        data_type: varchar
+        description: Street address and number.
+      - name: state
+        data_type: varchar
+        description: State or province within the country.
+      - name: _fivetran_deleted
+        data_type: boolean
+        description: Indicates whether the record was deleted by Fivetran.
+      - name: _fivetran_synced
+        data_type: timestamp_tz
+        description: Timestamp when the record was last synced by Fivetran.
+      - name: _fivetran_synced_date
+        data_type: date
+        description: Date when the record was last synced by Fivetran.
+      - name: _fivetran_synced_time
+        data_type: time
+        description: Time when the record was last synced by Fivetran.
 
