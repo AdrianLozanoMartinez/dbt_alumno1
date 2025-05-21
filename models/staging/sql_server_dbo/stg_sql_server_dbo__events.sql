@@ -17,7 +17,7 @@ events_casted AS (
         , event_type
         , user_id
         , product_id
-        , created_at
+        , CAST(created_at AS TIMESTAMP_TZ) AS created_at
         , CAST(created_at AS TIMESTAMP)::DATE AS created_at_date
         , CAST(created_at AS TIMESTAMP)::TIME AS created_at_time
         , order_id

@@ -1,4 +1,4 @@
-version: 2
+timestamp_tz  version: 2
 
 models:
   - name: fct_orders
@@ -11,14 +11,12 @@ models:
         data_type: varchar
         description: Unique identifier for each order item.
         constraints:
-          - type: not_null
+          - type: primary_key
       - name: order_id
         data_type: varchar
         description: Unique identifier for each order.
         constraints:
           - type: not_null
-          - type: unique
-          - type: primary_key
       - name: product_id
         data_type: varchar
         description: Unique identifier for each product.
@@ -113,11 +111,16 @@ models:
           - type: not_null
 
   - name: fct_events
+    config:
+        contract:
+          enforced: true
     description: Tracks user interactions such as clicks, views, and conversions.
     columns:
       - name: event_id
         data_type: varchar
         description: Unique identifier for each event.
+        constraints:
+          - type: primary_key
       - name: page_url
         data_type: varchar
         description: URL of the page where the event occurred.
@@ -127,43 +130,71 @@ models:
       - name: event_type
         data_type: varchar
         description: Type of event, such as 'click' or 'view'.
+        constraints:
+          - type: not_null
       - name: user_id
         data_type: varchar
+        constraints:
+          - type: not_null
+          - type: foreign_key
         description: Identifier of the user who placed the order.
       - name: product_id
         data_type: varchar
         description: Unique identifier for each product.
+        constraints:
+          - type: not_null
+          - type: foreign_key
       - name: created_at
         data_type: timestamp_tz
         description: Timestamp when the order was placed.
+        constraints:
+          - type: not_null
       - name: created_at_date
         data_type: date
         description: Date when the order was placed.
+        constraints:
+          - type: not_null
       - name: created_at_time
         data_type: time
         description: Time when the order was placed.
+        constraints:
+          - type: not_null
       - name: order_id
         data_type: varchar
         description: Unique identifier for each order.
-      - name: _fivetran_deleted_order_item
+        constraints:
+          - type: not_null
+          - type: foreign_key
+      - name: _fivetran_deleted
         data_type: boolean
         description: Indicates whether the record was deleted by Fivetran in order item.
-      - name: _fivetran_synced_order_item
+      - name: _fivetran_synced
         data_type: timestamp_tz
         description: Timestamp when the record was last synced by Fivetran in order item.
-      - name: _fivetran_synced_date_order_item
+        constraints:
+          - type: not_null
+      - name: _fivetran_synced_date
         data_type: date
         description: Date when the record was last synced by Fivetran in order item.
-      - name: _fivetran_synced_time_order_item
+        constraints:
+          - type: not_null
+      - name: _fivetran_synced_time
         data_type: time
         description: Time when the record was last synced by Fivetran in order item.
+        constraints:
+          - type: not_null
 
   - name: dim_users
+    config:
+        contract:
+          enforced: true
     description: Information about registered users and their contact details.
     columns:
       - name: user_id
         data_type: varchar
         description: Unique identifier for each user.
+        constraints:
+          - type: primary_key
       - name: updated_at
         data_type: timestamp_tz
         description: Timestamp when the user record was last updated.
@@ -176,9 +207,14 @@ models:
       - name: address_id
         data_type: varchar
         description: Identifier for the user's primary address.
+        constraints:
+          - type: not_null
+          - type: foreign_key
       - name: last_name
         data_type: varchar
         description: User's last name.
+        constraints:
+          - type: not_null
       - name: created_at
         data_type: timestamp_tz
         description: Timestamp when the user account was created.
@@ -191,6 +227,8 @@ models:
       - name: phone_number
         data_type: varchar
         description: User's contact phone number.
+        constraints:
+          - type: not_null
       - name: total_orders
         data_type: number
         description: Total number of orders placed by the user.
@@ -206,42 +244,69 @@ models:
       - name: _fivetran_synced
         data_type: timestamp_tz
         description: Time and date when the record was last synced by Fivetran.
+        constraints:
+          - type: not_null
       - name: _fivetran_synced_date
         data_type: date
         description: Date when the record was last synced by Fivetran.
+        constraints:
+          - type: not_null
       - name: _fivetran_synced_time
         data_type: time
         description: Time when the record was last synced by Fivetran.
+        constraints:
+          - type: not_null
 
   - name: dim_status_promos
+    config:
+        contract:
+          enforced: true
     description: Status promo
     columns:
       - name: status_promo_id
         data_type: varchar
         description: Unique identifier for each status.
+        constraints:
+          - type: primary_key
       - name: status_promo
         data_type: varchar
         description: Status of the promotion (e.g., active, expired).
+        constraints:
+          - type: not_null
 
   - name: dim_status_order
+    config:
+        contract:
+          enforced: true
     description: Status orders
     columns:
       - name: status_order_id
         data_type: varchar
         description: Identifier of the status who placed the order.
+        constraints:
+          - type: primary_key
       - name: status_order
         data_type: varchar
         description: Current status of the order (e.g., shipped, delivered).
+        constraints:
+          - type: not_null
 
   - name: dim_shipping
+    config:
+        contract:
+          enforced: true
     description: Shipping services
     columns:
       - name: shipping_service_id
         data_type: varchar
         description: Identifier of the shipping_service.
+        constraints:
+          - type: primary_key
       - name: shipping_service
         data_type: varchar
         description: Name associated with shipping.
+        constraints:
+          - type: not_null
       - name: shipping_cost
         data_type: float
         description: Cost associated with shipping.
@@ -249,83 +314,126 @@ models:
         data_type: timestamp_tz
         description: Estimated delivery
       - name: estimated_delivery_at_date
-        data_type: date
+        data_type: Date  
         description: Estimated delivery day
       - name: estimated_delivery_at_time
-        data_type: time
+        data_type: Time  
         description: Estimated delivery time
       - name: delivered_at
         data_type: timestamp_tz
         description: Delivered
       - name: delivered_at_date
-        data_type: date
+        data_type: date  
         description: Delivered date
       - name: delivered_at_time
-        data_type: time
+        data_type: time  
         description: Delivered time
 
   - name: dim_promos
+    config:
+        contract:
+          enforced: true
     description: Promotions and discounts available to customers.
     columns:
       - name: promo_id
         data_type: varchar
         description: Unique identifier for each promotion.
+        constraints:
+          - type: primary_key
       - name: discount
         data_type: number
         description: Discount amount or percentage offered.
+        constraints:
+          - type: not_null
       - name: status_promo_id
         data_type: varchar
         description: Unique identifier for each status.
+        constraints:
+          - type: not_null
       - name: status_promo
         data_type: varchar
         description: Status of the promotion (e.g., active, expired).
+        constraints:
+          - type: not_null
       - name: _fivetran_deleted
         data_type: boolean
         description: Indicates whether the record was deleted by Fivetran.
-      - name: _fivetran_synced_date
-        data_type: date
-        description: Date when the record was last synced by Fivetran.
-      - name: _fivetran_synced_time
+      - name: _fivetran_synced
         data_type: timestamp_tz
+        description: Timestamp when the record was last synced by Fivetran.
+      - name: _fivetran_synced_date
+        data_type: date  
+        description: Date when the record was last synced by Fivetran.
+        constraints:
+          - type: not_null
+      - name: _fivetran_synced_time
+        data_type: time
         description: Time when the record was last synced by Fivetran.
+        constraints:
+          - type: not_null
 
   - name: dim_products
+    config:
+        contract:
+          enforced: true
     description: List of available products and their attributes.
     columns:
       - name: product_id
         data_type: varchar
         description: Unique identifier for each product.
+        constraints:
+          - type: primary_key
       - name: price
         data_type: float
         description: Unit price of the product.
+        constraints:
+          - type: not_null
       - name: name
         data_type: varchar
         description: Name of the product.
+        constraints:
+          - type: not_null
       - name: inventory
         data_type: number
         description: Number of items available in stock.
       - name: _fivetran_deleted
         data_type: boolean
         description: Indicates whether the record was deleted by Fivetran.
-      - name: _fivetran_synced_date
-        data_type: date
+      - name: _fivetran_synced
+        data_type: timestamp_tz  
         description: Date when the record was last synced by Fivetran.
+        constraints:
+          - type: not_null
+      - name: _fivetran_synced_date
+        data_type: date  
+        description: Date when the record was last synced by Fivetran.
+        constraints:
+          - type: not_null
       - name: _fivetran_synced_time
-        data_type: timestamp_tz
+        data_type: time
         description: Time when the record was last synced by Fivetran.
+        constraints:
+          - type: not_null
 
   - name: dim_addresses
+    config:
+        contract:
+          enforced: true
     description: Contains address details for users and orders.
     columns:
       - name: address_id
         data_type: varchar
         description: Unique identifier for each address.
+        constraints:
+          - type: primary_key
       - name: zipcode
-        data_type: number
+        data_type: text
         description: Postal code associated with the address.
       - name: country
         data_type: varchar
         description: Country name associated with the address.
+        constraints:
+          - type: not_null
       - name: address
         data_type: varchar
         description: Street address and number.
@@ -338,10 +446,16 @@ models:
       - name: _fivetran_synced
         data_type: timestamp_tz
         description: Timestamp when the record was last synced by Fivetran.
+        constraints:
+          - type: not_null
       - name: _fivetran_synced_date
-        data_type: date
+        data_type: date  
         description: Date when the record was last synced by Fivetran.
+        constraints:
+          - type: not_null
       - name: _fivetran_synced_time
-        data_type: time
+        data_type: time  
         description: Time when the record was last synced by Fivetran.
+        constraints:
+          - type: not_null
 
