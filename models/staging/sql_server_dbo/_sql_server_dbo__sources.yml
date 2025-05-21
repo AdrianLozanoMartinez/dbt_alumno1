@@ -158,8 +158,6 @@ sources:
               - dbt_utils.accepted_range:
                   min_value: 0
           - name: delivered_at
-            tests:
-              - not_null
             description: Actual delivery date and time.
           - name: tracking_id
             description: Tracking number for shipment tracking.

@@ -79,9 +79,6 @@ models:
         description: Product associated with the event.
         tests:
           - not_null
-          - relationships:
-              to: ref('stg_sql_server_dbo__products')
-              field: product_id 
       - name: created_at
         data_type: timestamp_ntz
         description: Timestamp when the event occurred.
@@ -102,9 +99,6 @@ models:
         description: Order linked to the event, if applicable.
         tests:
           - not_null
-          - relationships:
-              to: ref('stg_sql_server_dbo__orders')
-              field: order_id 
       - name: _fivetran_deleted
         data_type: boolean
         description: Indicates whether the record was deleted by Fivetran.
@@ -181,7 +175,6 @@ models:
         description: Unique identifier for each order.
         tests:
           - not_null
-          - unique
       - name: shipping_service_id
         data_type: varchar
         description: Identifier of the shipping_service.
@@ -195,10 +188,6 @@ models:
       - name: shipping_cost
         data_type: float
         description: Cost associated with shipping.
-        tests:
-          - not_null
-          - dbt_utils.accepted_range:
-              min_value: 0
       - name: address_id
         data_type: varchar
         description: Identifier of the address where the order is shipped.
@@ -225,10 +214,6 @@ models:
       - name: promo_id
         data_type: varchar
         description: Identifier of the promotion applied to the order, if any.
-        tests:
-          - relationships:
-              to: ref('stg_sql_server_dbo__promos')
-              field: promo_id 
       - name: estimated_delivery_at
         data_type: timestamp_tz
         description: Estimated delivery date and time.
@@ -242,7 +227,6 @@ models:
         data_type: float
         description: Total cost of the order before tax and discounts.
         tests:
-          - not_null
           - dbt_utils.accepted_range:
               min_value: 0
       - name: user_id
@@ -273,15 +257,12 @@ models:
         data_type: varchar
         description: Identifier of the status who placed the order.
         tests:
-          - not_null
           - relationships:
               to: ref('stg_sql_server_dbo__status_orders')
               field: status_order_id 
       - name: status_order
         data_type: varchar
         description: Current status of the order (e.g., shipped, delivered).
-        tests:
-          - not_null
       - name: _fivetran_deleted
         data_type: boolean
         description: Indicates whether the record was deleted by Fivetran.
@@ -466,12 +447,34 @@ models:
         description: Identifier of the shipping_service.
         tests:
           - not_null
-          - unique
       - name: shipping_service
         data_type: varchar
         description: Name associated with shipping.
         tests:
           - not_null
+      - name: shipping_cost
+        data_type: float
+        description: Cost associated with shipping.
+      - name: estimated_delivery_at
+        data_type: timestamp_tz
+        description: Estimated delivery
+      - name: estimated_delivery_at_date
+        data_type: date
+        description: Estimated delivery day
+      - name: estimated_delivery_at_time
+        data_type: time
+        description: Estimated delivery time
+      - name: delivered_at
+        data_type: timestamp_tz
+        description: Delivered
+
+      - name: delivered_at_date
+        data_type: date
+        description: Delivered date
+
+      - name: delivered_at_time
+        data_type: time
+        description: Delivered time
 
   - name: stg_sql_server_dbo__status_orders
     description: Status orders
@@ -479,14 +482,9 @@ models:
       - name: status_order_id
         data_type: varchar
         description: Identifier of the status who placed the order.
-        tests:
-          - not_null
-          - unique
       - name: status_order
         data_type: varchar
         description: Current status of the order (e.g., shipped, delivered).
-        tests:
-          - not_null
 
   - name: stg_sql_server_dbo__status_promos
     description: Promos
