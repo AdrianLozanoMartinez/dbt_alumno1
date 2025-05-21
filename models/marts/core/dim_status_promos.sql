@@ -5,4 +5,4 @@
 }}
 
 SELECT * 
-FROM {{ ref('stg_sql_server_dbo__promos') }}
+FROM {{ ref('stg_sql_server_dbo__status_promos') }}

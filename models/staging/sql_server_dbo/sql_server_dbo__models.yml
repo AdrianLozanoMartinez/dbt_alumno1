@@ -458,7 +458,7 @@ models:
         description: Current status of the order (e.g., shipped, delivered).
 
   - name: stg_sql_server_dbo__status_promos
-    description: Promos
+    description: Status promo
     columns:
       - name: status_promo_id
         data_type: varchar
