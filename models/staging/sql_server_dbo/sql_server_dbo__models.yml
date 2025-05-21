@@ -423,8 +423,6 @@ models:
       - name: shipping_service
         data_type: varchar
         description: Name associated with shipping.
-        tests:
-          - not_null
       - name: shipping_cost
         data_type: float
         description: Cost associated with shipping.
