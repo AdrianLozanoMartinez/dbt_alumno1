@@ -182,12 +182,6 @@ models:
           - relationships:
               to: ref('stg_sql_server_dbo__shipping_services')
               field: shipping_service_id
-      - name: shipping_service
-        data_type: varchar
-        description: Name associated with shipping.
-      - name: shipping_cost
-        data_type: float
-        description: Cost associated with shipping.
       - name: address_id
         data_type: varchar
         description: Identifier of the address where the order is shipped.
@@ -214,15 +208,6 @@ models:
       - name: promo_id
         data_type: varchar
         description: Identifier of the promotion applied to the order, if any.
-      - name: estimated_delivery_at
-        data_type: timestamp_tz
-        description: Estimated delivery date and time.
-      - name: estimated_delivery_at_date
-        data_type: date
-        description: Estimated delivery date.
-      - name: estimated_delivery_at_time
-        data_type: time
-        description: Estimated delivery time.
       - name: order_cost
         data_type: float
         description: Total cost of the order before tax and discounts.
@@ -244,15 +229,6 @@ models:
           - not_null
           - dbt_utils.accepted_range:
               min_value: 0
-      - name: delivered_at
-        data_type: timestamp_tz
-        description: Actual delivery date and time.
-      - name: delivered_at_date
-        data_type: date
-        description: Actual delivery date.
-      - name: delivered_at_time
-        data_type: time
-        description: Actual delivery time.
       - name: status_order_id
         data_type: varchar
         description: Identifier of the status who placed the order.
@@ -260,9 +236,6 @@ models:
           - relationships:
               to: ref('stg_sql_server_dbo__status_orders')
               field: status_order_id 
-      - name: status_order
-        data_type: varchar
-        description: Current status of the order (e.g., shipped, delivered).
       - name: _fivetran_deleted
         data_type: boolean
         description: Indicates whether the record was deleted by Fivetran.
@@ -467,11 +440,9 @@ models:
       - name: delivered_at
         data_type: timestamp_tz
         description: Delivered
-
       - name: delivered_at_date
         data_type: date
         description: Delivered date
-
       - name: delivered_at_time
         data_type: time
         description: Delivered time
