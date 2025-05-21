@@ -1,0 +1,123 @@
+version: 2
+
+models:
+  - name: fct_orders
+    config:
+        contract:
+          enforced: true
+    description: Information about customer orders, including status and costs.
+    columns:
+      - name: order_item_id
+        data_type: varchar
+        description: Unique identifier for each order item.
+      - name: order_id
+        data_type: varchar
+        description: Unique identifier for each order.
+      - name: product_id
+        data_type: varchar
+        description: Unique identifier for each product.
+      - name: quantity
+        data_type: number
+        description: Quantity of the product in the order.
+      - name: shipping_service_id
+        data_type: varchar
+        description: Identifier of the shipping_service.
+      - name: address_id
+        data_type: varchar
+        description: Identifier of the address where the order is shipped.
+      - name: created_at
+        data_type: timestamp_tz
+        description: Timestamp when the order was placed.
+      - name: created_at_date
+        data_type: date
+        description: Date when the order was placed.
+      - name: created_at_time
+        data_type: time
+        description: Time when the order was placed.
+      - name: promo_id
+        data_type: varchar
+        description: Identifier of the promotion applied to the order, if any.
+      - name: order_cost
+        data_type: float
+        description: Total cost of the order before tax and discounts.
+      - name: user_id
+        data_type: varchar
+        description: Identifier of the user who placed the order.
+      - name: order_total
+        data_type: float
+        description: Final order amount including all costs and discounts.
+      - name: status_order_id
+        data_type: varchar
+        description: Current status of the order (e.g., shipped, delivered).
+      - name: _fivetran_deleted_order
+        data_type: boolean
+        description: Indicates whether the record was deleted by Fivetran in order.
+      - name: _fivetran_synced_order
+        data_type: timestamp_tz
+        description: Timestamp when the record was last synced by Fivetran in order.
+      - name: _fivetran_synced_date_order
+        data_type: date
+        description: Date when the record was last synced by Fivetran in order.
+      - name: _fivetran_synced_time_order
+        data_type: time
+        description: Time when the record was last synced by Fivetran in order.
+      - name: _fivetran_deleted_order_item
+        data_type: boolean
+        description: Indicates whether the record was deleted by Fivetran in order item.
+      - name: _fivetran_synced_order_item
+        data_type: timestamp_tz
+        description: Timestamp when the record was last synced by Fivetran in order item.
+      - name: _fivetran_synced_date_order_item
+        data_type: date
+        description: Date when the record was last synced by Fivetran in order item.
+      - name: _fivetran_synced_time_order_item
+        data_type: time
+        description: Time when the record was last synced by Fivetran in order item.
+
+  - name: fct_events
+    description: ""
+    columns:
+      - name: event_id
+        data_type: varchar
+        description: Unique identifier for each event.
+      - name: page_url
+        data_type: varchar
+        description: URL of the page where the event occurred.
+      - name: page_url_sin_https
+        data_type: varchar
+        description: URL of the page where the event occurred without https.
+      - name: event_type
+        data_type: varchar
+        description: Type of event, such as 'click' or 'view'.
+      - name: user_id
+        data_type: varchar
+        description: Identifier of the user who placed the order.
+      - name: product_id
+        data_type: varchar
+        description: Unique identifier for each product.
+      - name: created_at
+        data_type: timestamp_tz
+        description: Timestamp when the order was placed.
+      - name: created_at_date
+        data_type: date
+        description: Date when the order was placed.
+      - name: created_at_time
+        data_type: time
+        description: Time when the order was placed.
+      - name: order_id
+        data_type: varchar
+        description: Unique identifier for each order.
+      - name: _fivetran_deleted_order_item
+        data_type: boolean
+        description: Indicates whether the record was deleted by Fivetran in order item.
+      - name: _fivetran_synced_order_item
+        data_type: timestamp_tz
+        description: Timestamp when the record was last synced by Fivetran in order item.
+      - name: _fivetran_synced_date_order_item
+        data_type: date
+        description: Date when the record was last synced by Fivetran in order item.
+      - name: _fivetran_synced_time_order_item
+        data_type: time
+        description: Time when the record was last synced by Fivetran in order item.
+
+
