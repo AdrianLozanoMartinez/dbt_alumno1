@@ -27,24 +27,6 @@ models:
       - name: state
         data_type: varchar
         description: State or province within the country.
-      - name: _fivetran_deleted
-        data_type: boolean
-        description: Indicates whether the record was deleted by Fivetran.
-      - name: _fivetran_synced
-        data_type: timestamp_tz
-        description: Timestamp when the record was last synced by Fivetran.
-        tests:
-          - not_null
-      - name: _fivetran_synced_date
-        data_type: date
-        description: Date when the record was last synced by Fivetran.
-        tests:
-          - not_null
-      - name: _fivetran_synced_time
-        data_type: time
-        description: Time when the record was last synced by Fivetran.
-        tests:
-          - not_null
 
   - name: stg_sql_server_dbo__events
     description: Tracks user interactions such as clicks, views, and conversions.
@@ -99,24 +81,6 @@ models:
         description: Order linked to the event, if applicable.
         tests:
           - not_null
-      - name: _fivetran_deleted
-        data_type: boolean
-        description: Indicates whether the record was deleted by Fivetran.
-      - name: _fivetran_synced
-        data_type: timestamp_tz
-        description: Timestamp when the record was last synced by Fivetran.
-        tests:
-          - not_null
-      - name: _fivetran_synced_date
-        data_type: date
-        description: Date when the record was last synced by Fivetran.
-        tests:
-          - not_null
-      - name: _fivetran_synced_time
-        data_type: time
-        description: Time when the record was last synced by Fivetran.
-        tests:
-          - not_null
 
   - name: stg_sql_server_dbo__order_items
     description: Details of items included in each order.
@@ -146,24 +110,6 @@ models:
       - name: quantity
         data_type: number
         description: Quantity of the product in the order.
-        tests:
-          - not_null
-      - name: _fivetran_deleted
-        data_type: boolean
-        description: Indicates whether the record was deleted by Fivetran.
-      - name: _fivetran_synced
-        data_type: timestamp_tz
-        description: Timestamp when the record was last synced by Fivetran.
-        tests:
-          - not_null
-      - name: _fivetran_synced_date
-        data_type: date
-        description: Date when the record was last synced by Fivetran.
-        tests:
-          - not_null
-      - name: _fivetran_synced_time
-        data_type: timestamp_tz
-        description: Time when the record was last synced by Fivetran.
         tests:
           - not_null
 
@@ -236,24 +182,6 @@ models:
           - relationships:
               to: ref('stg_sql_server_dbo__status_orders')
               field: status_order_id 
-      - name: _fivetran_deleted
-        data_type: boolean
-        description: Indicates whether the record was deleted by Fivetran.
-      - name: _fivetran_synced
-        data_type: timestamp_tz
-        description: Timestamp when the record was last synced by Fivetran.
-        tests:
-          - not_null
-      - name: _fivetran_synced_date
-        data_type: date
-        description: Date when the record was last synced by Fivetran.
-        tests:
-          - not_null
-      - name: _fivetran_synced_time
-        data_type: timestamp_tz
-        description: Time when the record was last synced by Fivetran.
-        tests:
-          - not_null
 
   - name: stg_sql_server_dbo__products
     description: List of available products and their attributes.
@@ -282,19 +210,6 @@ models:
         tests:
           - dbt_utils.accepted_range:
               min_value: 0
-      - name: _fivetran_deleted
-        data_type: boolean
-        description: Indicates whether the record was deleted by Fivetran.
-      - name: _fivetran_synced_date
-        data_type: date
-        description: Date when the record was last synced by Fivetran.
-        tests:
-          - not_null
-      - name: _fivetran_synced_time
-        data_type: timestamp_tz
-        description: Time when the record was last synced by Fivetran.
-        tests:
-          - not_null
 
   - name: stg_sql_server_dbo__promos
     description: Promotions and discounts available to customers.
@@ -320,19 +235,6 @@ models:
           - relationships:
               to: ref('stg_sql_server_dbo__status_promos')
               field: status_promo_id 
-      - name: _fivetran_deleted
-        data_type: boolean
-        description: Indicates whether the record was deleted by Fivetran.
-      - name: _fivetran_synced_date
-        data_type: date
-        description: Date when the record was last synced by Fivetran.
-        tests:
-          - not_null
-      - name: _fivetran_synced_time
-        data_type: timestamp_tz
-        description: Time when the record was last synced by Fivetran.
-        tests:
-          - not_null
 
   - name: stg_sql_server_dbo__users
     description: Information about registered users and their contact details.
@@ -393,19 +295,6 @@ models:
       - name: email
         data_type: varchar
         description: User's email address.
-      - name: _fivetran_deleted
-        data_type: boolean
-        description: Indicates whether the record was deleted by Fivetran.
-      - name: _fivetran_synced_date
-        data_type: date
-        description: Date when the record was last synced by Fivetran.
-        tests:
-          - not_null
-      - name: _fivetran_synced_time
-        data_type: timestamp_tz
-        description: Time when the record was last synced by Fivetran.
-        tests:
-          - not_null
 
   - name: stg_sql_server_dbo__shipping_services
     description: Shipping services

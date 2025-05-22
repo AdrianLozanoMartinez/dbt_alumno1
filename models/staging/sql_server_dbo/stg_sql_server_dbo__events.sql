@@ -21,10 +21,6 @@ events_casted AS (
         , CAST(created_at AS TIMESTAMP)::DATE AS created_at_date
         , CAST(created_at AS TIMESTAMP)::TIME AS created_at_time
         , order_id
-        , _fivetran_deleted
-        , _fivetran_synced
-        , CAST(_fivetran_synced AS TIMESTAMP)::DATE AS _fivetran_synced_date
-        , CAST(_fivetran_synced AS TIMESTAMP)::TIME AS _fivetran_synced_time
     FROM src_events
     )
 
