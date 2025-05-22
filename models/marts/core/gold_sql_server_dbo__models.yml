@@ -10,13 +10,12 @@ models:
       - name: order_item_id
         data_type: varchar
         description: Unique identifier for each order item.
-        constraints:
-          - type: primary_key
       - name: order_id
         data_type: varchar
-        description: Unique identifier for each order.
+        description: Unique identifier for each order. It is foreign key.
         constraints:
-          - type: not_null
+          - type: primary_key
+            columns: [order_item_id, order_id]
       - name: product_id
         data_type: varchar
         description: Unique identifier for each product.
@@ -72,7 +71,7 @@ models:
           - type: not_null
       - name: status_order_id
         data_type: varchar
-        description: Current status of the order (e.g., shipped, delivered).
+        description: Current status of the order (e.g., shipped, delivered). It is foreign key.
 
   - name: fct_events
     config:
@@ -271,7 +270,7 @@ models:
           - type: not_null
       - name: status_promo_id
         data_type: varchar
-        description: Unique identifier for each status.
+        description: Unique identifier for each status. It is foreign key.
         constraints:
           - type: not_null
 
