@@ -5,16 +5,14 @@
 }}
 
 SELECT
-    e.event_id,
-    e.page_url,
-    e.page_url_sin_https,
-    e.event_type,
-    e.user_id,
-    e.product_id,
-    e.created_at,
-    e.created_at_date,
-    e.created_at_time,
-    e.order_id
-FROM {{ ref('stg_sql_server_dbo__events') }} e
-LEFT JOIN {{ ref('dim_users') }} u ON e.user_id = u.user_id
-LEFT JOIN {{ ref('dim_products') }} p ON e.product_id = p.product_id
+    event_id,
+    page_url,
+    page_url_sin_https,
+    event_type,
+    user_id,
+    product_id,
+    created_at,
+    created_at_date,
+    created_at_time,
+    order_id
+FROM {{ ref('stg_sql_server_dbo__events') }} 
