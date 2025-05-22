@@ -13,7 +13,6 @@ promos_casted AS (
     SELECT
         p.promo_id
         , p.discount
-        , s.status_promo
         , s.status_promo_id
         , p._fivetran_deleted
         , p._fivetran_synced

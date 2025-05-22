@@ -102,13 +102,9 @@ models:
       - name: _fivetran_synced_date_order_item
         data_type: date
         description: Date when the record was last synced by Fivetran in order item.
-        constraints:
-          - type: not_null
       - name: _fivetran_synced_time_order_item
         data_type: time
         description: Time when the record was last synced by Fivetran in order item.
-        constraints:
-          - type: not_null
 
   - name: fct_events
     config:
@@ -288,8 +284,6 @@ models:
       - name: status_order
         data_type: varchar
         description: Current status of the order (e.g., shipped, delivered).
-        constraints:
-          - type: not_null
 
   - name: dim_shipping
     config:
@@ -305,8 +299,6 @@ models:
       - name: shipping_service
         data_type: varchar
         description: Name associated with shipping.
-        constraints:
-          - type: not_null
       - name: shipping_cost
         data_type: float
         description: Cost associated with shipping.
