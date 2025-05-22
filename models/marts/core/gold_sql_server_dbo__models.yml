@@ -1,4 +1,4 @@
-timestamp_tz  version: 2
+version: 2
 
 models:
   - name: fct_orders
@@ -73,38 +73,6 @@ models:
       - name: status_order_id
         data_type: varchar
         description: Current status of the order (e.g., shipped, delivered).
-      - name: _fivetran_deleted_order
-        data_type: boolean
-        description: Indicates whether the record was deleted by Fivetran in order.
-      - name: _fivetran_synced_order
-        data_type: timestamp_tz
-        description: Timestamp when the record was last synced by Fivetran in order.
-        constraints:
-          - type: not_null
-      - name: _fivetran_synced_date_order
-        data_type: date
-        description: Date when the record was last synced by Fivetran in order.
-        constraints:
-          - type: not_null
-      - name: _fivetran_synced_time_order
-        data_type: time
-        description: Time when the record was last synced by Fivetran in order.
-        constraints:
-          - type: not_null
-      - name: _fivetran_deleted_order_item
-        data_type: boolean
-        description: Indicates whether the record was deleted by Fivetran in order item.
-      - name: _fivetran_synced_order_item
-        data_type: timestamp_tz
-        description: Timestamp when the record was last synced by Fivetran in order item.
-        constraints:
-          - type: not_null
-      - name: _fivetran_synced_date_order_item
-        data_type: date
-        description: Date when the record was last synced by Fivetran in order item.
-      - name: _fivetran_synced_time_order_item
-        data_type: time
-        description: Time when the record was last synced by Fivetran in order item.
 
   - name: fct_events
     config:
@@ -161,24 +129,6 @@ models:
         constraints:
           - type: not_null
           - type: foreign_key
-      - name: _fivetran_deleted
-        data_type: boolean
-        description: Indicates whether the record was deleted by Fivetran in order item.
-      - name: _fivetran_synced
-        data_type: timestamp_tz
-        description: Timestamp when the record was last synced by Fivetran in order item.
-        constraints:
-          - type: not_null
-      - name: _fivetran_synced_date
-        data_type: date
-        description: Date when the record was last synced by Fivetran in order item.
-        constraints:
-          - type: not_null
-      - name: _fivetran_synced_time
-        data_type: time
-        description: Time when the record was last synced by Fivetran in order item.
-        constraints:
-          - type: not_null
 
   - name: dim_users
     config:
@@ -234,24 +184,6 @@ models:
       - name: email
         data_type: varchar
         description: User's email address.
-      - name: _fivetran_deleted
-        data_type: boolean
-        description: Indicates whether the record was deleted by Fivetran.
-      - name: _fivetran_synced
-        data_type: timestamp_tz
-        description: Time and date when the record was last synced by Fivetran.
-        constraints:
-          - type: not_null
-      - name: _fivetran_synced_date
-        data_type: date
-        description: Date when the record was last synced by Fivetran.
-        constraints:
-          - type: not_null
-      - name: _fivetran_synced_time
-        data_type: time
-        description: Time when the record was last synced by Fivetran.
-        constraints:
-          - type: not_null
 
   - name: dim_status_promos
     config:
@@ -342,27 +274,6 @@ models:
         description: Unique identifier for each status.
         constraints:
           - type: not_null
-      - name: status_promo
-        data_type: varchar
-        description: Status of the promotion (e.g., active, expired).
-        constraints:
-          - type: not_null
-      - name: _fivetran_deleted
-        data_type: boolean
-        description: Indicates whether the record was deleted by Fivetran.
-      - name: _fivetran_synced
-        data_type: timestamp_tz
-        description: Timestamp when the record was last synced by Fivetran.
-      - name: _fivetran_synced_date
-        data_type: date  
-        description: Date when the record was last synced by Fivetran.
-        constraints:
-          - type: not_null
-      - name: _fivetran_synced_time
-        data_type: time
-        description: Time when the record was last synced by Fivetran.
-        constraints:
-          - type: not_null
 
   - name: dim_products
     config:
@@ -388,24 +299,6 @@ models:
       - name: inventory
         data_type: number
         description: Number of items available in stock.
-      - name: _fivetran_deleted
-        data_type: boolean
-        description: Indicates whether the record was deleted by Fivetran.
-      - name: _fivetran_synced
-        data_type: timestamp_tz  
-        description: Date when the record was last synced by Fivetran.
-        constraints:
-          - type: not_null
-      - name: _fivetran_synced_date
-        data_type: date  
-        description: Date when the record was last synced by Fivetran.
-        constraints:
-          - type: not_null
-      - name: _fivetran_synced_time
-        data_type: time
-        description: Time when the record was last synced by Fivetran.
-        constraints:
-          - type: not_null
 
   - name: dim_addresses
     config:
@@ -432,22 +325,4 @@ models:
       - name: state
         data_type: varchar
         description: State or province within the country.
-      - name: _fivetran_deleted
-        data_type: boolean
-        description: Indicates whether the record was deleted by Fivetran.
-      - name: _fivetran_synced
-        data_type: timestamp_tz
-        description: Timestamp when the record was last synced by Fivetran.
-        constraints:
-          - type: not_null
-      - name: _fivetran_synced_date
-        data_type: date  
-        description: Date when the record was last synced by Fivetran.
-        constraints:
-          - type: not_null
-      - name: _fivetran_synced_time
-        data_type: time  
-        description: Time when the record was last synced by Fivetran.
-        constraints:
-          - type: not_null
 
