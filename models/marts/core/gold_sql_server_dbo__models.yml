@@ -342,11 +342,6 @@ models:
         description: Unique identifier for each status.
         constraints:
           - type: not_null
-      - name: status_promo
-        data_type: varchar
-        description: Status of the promotion (e.g., active, expired).
-        constraints:
-          - type: not_null
       - name: _fivetran_deleted
         data_type: boolean
         description: Indicates whether the record was deleted by Fivetran.
